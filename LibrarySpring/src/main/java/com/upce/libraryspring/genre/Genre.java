@@ -5,6 +5,7 @@ import lombok.Data;
 import org.hibernate.annotations.ColumnTransformer;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
@@ -15,6 +16,7 @@ public class Genre {
     @Column(nullable = false, updatable = false)
     private Integer id;
 
+    @NotNull
     @Column(nullable = false, unique = true)
     @ColumnTransformer(write = "UPPER(?)", read = "UPPER(name)")
     private String name;

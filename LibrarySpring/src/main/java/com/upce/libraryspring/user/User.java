@@ -1,16 +1,20 @@
 package com.upce.libraryspring.user;
 
-import com.upce.libraryspring.genre.Genre;
+import com.upce.libraryspring.library.Library;
 import com.upce.libraryspring.role.Role;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.Past;
+import javax.validation.constraints.*;
 import java.sql.Date;
 import java.sql.Time;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Set;
 
-@Entity
+@Entity(name = "app_user")
 @Data
 public class User {
     @Id
@@ -18,16 +22,28 @@ public class User {
     @Column(nullable = false, updatable = false)
     private Integer id;
 
+    @NotNull
+    @NotBlank
     @Column(nullable = false, unique = true)
     private String username;
+
+    @NotNull
     @Column(nullable = false)
     private String password;
-    @Column(nullable = false)
+
+    @NotNull
+    @Email
+    @Column(nullable = false, unique = true)
     private String email;
+
     @Past(message = "Birth date cannot be in future or present.")
     private Date birthDate;
+
     @Column(columnDefinition = "timestamp default now()")
-    private Time creationDate;
+    private Timestamp creationDate = Timestamp.valueOf(LocalDateTime.now());
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<Library> userLibraries;
 
     @ManyToMany(cascade = {
             CascadeType.PERSIST,
@@ -35,4 +51,5 @@ public class User {
     })
     @JoinTable(name = "USER_ROLE", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> userRoles;
+
 }
