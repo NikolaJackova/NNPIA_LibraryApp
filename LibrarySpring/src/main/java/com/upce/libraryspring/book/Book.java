@@ -37,14 +37,14 @@ public class Book {
             CascadeType.PERSIST,
             CascadeType.MERGE
     })
-    @JoinTable(name = "BOOK_GENRE", joinColumns = @JoinColumn(name = "id"), inverseJoinColumns = @JoinColumn(name = "id"))
+    @JoinTable(name = "BOOK_GENRE", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "genre_id"))
     private Set<Genre> bookGenres;
 
     @ManyToMany(cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE
     })
-    @JoinTable(name = "BOOK_AUTHOR", joinColumns = @JoinColumn(name = "id"), inverseJoinColumns = @JoinColumn(name = "id"))
+    @JoinTable(name = "BOOK_AUTHOR", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "author_id"))
     private Set<Genre> bookAuthors;
 
 }

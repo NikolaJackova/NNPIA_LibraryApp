@@ -14,4 +14,9 @@ public class Library {
 
     private String name;
     private String description;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "library_type")
+    private LibraryType libraryType;
+
 }

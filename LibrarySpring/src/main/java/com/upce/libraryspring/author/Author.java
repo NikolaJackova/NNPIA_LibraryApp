@@ -5,7 +5,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.Past;
-import java.util.Date;
+import java.sql.Date;
 import java.util.Set;
 
 @Entity
