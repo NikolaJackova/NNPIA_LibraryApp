@@ -16,12 +16,12 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/create-user")
+    @PostMapping(value = {"", "/"})
     public UserDto createPost(@Valid @RequestBody UserDtoCreation userDtoCreation) {
         return userService.createUser(userDtoCreation);
     }
 
-    @GetMapping(value = "/")
+    @GetMapping(value = {"", "/"})
     public List<UserDto> getUsers(){
         return userService.getUsers();
     }

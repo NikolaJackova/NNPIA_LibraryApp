@@ -25,7 +25,6 @@ public class UserDto implements Serializable {
     private String email;
     @Past(message = "Birth date cannot be in future or present.")
     private Date birthDate;
-    private Timestamp creationDate;
     private Set<RoleDto> userRoles;
     private Set<LibraryDto> userLibraries;
 }

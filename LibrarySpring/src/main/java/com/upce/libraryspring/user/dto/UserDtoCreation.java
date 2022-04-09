@@ -28,7 +28,6 @@ public class UserDtoCreation implements Serializable {
     private final String email;
     @Past(message = "Birth date cannot be in future or present.")
     private final Date birthDate;
-    private final Timestamp creationDate = Timestamp.valueOf(LocalDateTime.now());
     private final Set<LibraryDto> userLibraries;
     private final Set<RoleDto> userRoles;
 }

@@ -3,6 +3,8 @@ package com.upce.libraryspring.user;
 import com.upce.libraryspring.library.Library;
 import com.upce.libraryspring.role.Role;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -40,7 +42,11 @@ public class User {
     private Date birthDate;
 
     @Column(columnDefinition = "timestamp default now()")
-    private Timestamp creationDate = Timestamp.valueOf(LocalDateTime.now());
+    @CreationTimestamp
+    private Timestamp created;
+
+    @UpdateTimestamp
+    private Timestamp updated;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Library> userLibraries;
