@@ -1,9 +1,7 @@
 package com.upce.libraryspring.user;
 
 import com.upce.libraryspring.user.dto.UserDto;
-import com.upce.libraryspring.user.dto.UserDtoCreation;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,14 +18,6 @@ public class UserServiceImpl implements UserService{
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
-    }
-
-    @Override
-    public UserDto createUser(UserDtoCreation userDtoCreation) {
-        User user = modelMapper.map(userDtoCreation, User.class);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        User savedUser = userRepository.save(user);
-        return modelMapper.map(savedUser, UserDto.class);
     }
 
     @Override

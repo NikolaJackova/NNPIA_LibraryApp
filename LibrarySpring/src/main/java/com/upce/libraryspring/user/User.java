@@ -3,21 +3,25 @@ package com.upce.libraryspring.user;
 import com.upce.libraryspring.library.Library;
 import com.upce.libraryspring.role.Role;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import java.sql.Date;
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name = "app_user")
-@Data
+@Getter
+@Setter
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,14 +52,28 @@ public class User {
     @UpdateTimestamp
     private Timestamp updated;
 
+    //TODO initialize?? if not there is null exception
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private Set<Library> userLibraries;
+    private Set<Library> userLibraries = new HashSet<>();
 
-    @ManyToMany(cascade = {
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE
     })
     @JoinTable(name = "USER_ROLE", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> userRoles;
+    private Set<Role> userRoles = new HashSet<>();
 
+    //TODO why there must be this implementation - else StackOverflow when creating new user
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
+    }
 }

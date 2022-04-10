@@ -12,6 +12,7 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -28,6 +29,4 @@ public class UserDtoCreation implements Serializable {
     private final String email;
     @Past(message = "Birth date cannot be in future or present.")
     private final Date birthDate;
-    private final Set<LibraryDto> userLibraries;
-    private final Set<RoleDto> userRoles;
 }
