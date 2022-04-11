@@ -1,7 +1,9 @@
 package com.upce.libraryspring.book;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.upce.libraryspring.author.AuthorDto;
 import com.upce.libraryspring.genre.GenreDto;
+import com.upce.libraryspring.library.Library;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -29,4 +31,6 @@ public class BookDto implements Serializable {
     private BookState bookState;
     private Set<GenreDto> bookGenres;
     private Set<AuthorDto> booAuthors;
+    @JsonIgnore
+    private Library library;
 }

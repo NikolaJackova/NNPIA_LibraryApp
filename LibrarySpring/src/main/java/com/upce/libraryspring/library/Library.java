@@ -3,13 +3,17 @@ package com.upce.libraryspring.library;
 import com.upce.libraryspring.book.Book;
 import com.upce.libraryspring.user.User;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 public class Library {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,10 +30,22 @@ public class Library {
     private LibraryType libraryType;
 
     @OneToMany(mappedBy = "library", fetch = FetchType.LAZY)
-    private Set<Book> libraryBooks;
+    private Set<Book> libraryBooks = new HashSet<>();
 
-    @ManyToOne
-    @JoinColumn
-    @MapsId("id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Library library = (Library) o;
+        return id == library.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
+    }
 }

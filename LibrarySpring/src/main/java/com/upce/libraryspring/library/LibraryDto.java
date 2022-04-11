@@ -1,5 +1,6 @@
 package com.upce.libraryspring.library;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.upce.libraryspring.book.BookDto;
 import com.upce.libraryspring.user.dto.UserDto;
 import lombok.Data;
@@ -18,5 +19,6 @@ public class LibraryDto implements Serializable {
     private String description;
     private LibraryType libraryType;
     private Set<BookDto> libraryBooks;
+    @JsonIgnore
     private UserDto user;
 }

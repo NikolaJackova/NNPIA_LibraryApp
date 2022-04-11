@@ -55,7 +55,6 @@ public class Book {
     private Set<Genre> bookAuthors;
 
     @ManyToOne
-    @JoinColumn
-    @MapsId("id")
+    @JoinColumn(name = "library_id", referencedColumnName = "id")
     private Library library;
 }

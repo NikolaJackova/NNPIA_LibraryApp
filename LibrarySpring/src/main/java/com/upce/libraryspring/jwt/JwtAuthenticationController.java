@@ -4,12 +4,9 @@ import com.upce.libraryspring.config.JwtTokenUtil;
 import com.upce.libraryspring.user.dto.UserDtoCreation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin
 public class JwtAuthenticationController {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenUtil jwtTokenUtil;
@@ -21,7 +18,7 @@ public class JwtAuthenticationController {
         this.jwtUserDetailServiceImpl = jwtUserDetailServiceImpl;
     }
 
-    @PostMapping(value = "/authenticate")
+    @PostMapping("/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
@@ -35,7 +32,7 @@ public class JwtAuthenticationController {
 
     @PostMapping(value = "/register")
     public ResponseEntity<?> saveUser(@RequestBody UserDtoCreation userDtoCreation){
-        return ResponseEntity.ok(jwtUserDetailServiceImpl.save(userDtoCreation));
+        return ResponseEntity.ok(jwtUserDetailServiceImpl.createUser(userDtoCreation));
     }
 
     private void authenticate(String username, String password) throws Exception {
