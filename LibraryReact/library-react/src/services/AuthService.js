@@ -5,7 +5,7 @@ class AuthService {
         return axios
             .post(`${process.env.REACT_APP_DEVELOPMENT}/authenticate`, {username, password})
             .then(response =>{
-                if (response.data.accessToken) {
+                if (response.data.jwttoken) {
                     localStorage.setItem("user", JSON.stringify(response.data));
                 }
                 return response.data;
