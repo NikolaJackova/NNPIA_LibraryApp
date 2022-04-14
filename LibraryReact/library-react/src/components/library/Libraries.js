@@ -1,11 +1,29 @@
 import DataGridCust from "../basic/DataGridCust";
-import {useEffect, useState} from "react";
+import {useMemo, useEffect, useState} from "react";
 import axios from "axios";
 import authHeader from "../../services/AuthHeader";
+import Table from "../basic/Table";
 
-function Libraries(){
-    const [libraries, setLibraries] = useState();
+function Libraries() {
+    const [libraries, setLibraries] = useState([]);
     const [message, setMessage] = useState("");
+    const columns = useMemo(
+        () => [
+            {
+                Header: "Id",
+                accessor: "id"
+            },
+            {
+                Header: "Name",
+                accessor: "name"
+            },
+            {
+                Header: "Description",
+                accessor: "description"
+            }
+        ],
+        []
+    );
 
     useEffect(() => {
         axios
@@ -27,7 +45,8 @@ function Libraries(){
 
     return (
         <div>
-        <DataGridCust/>
+            <Table columns={columns} data={libraries}/>
+            {message}
         </div>
     )
 }
