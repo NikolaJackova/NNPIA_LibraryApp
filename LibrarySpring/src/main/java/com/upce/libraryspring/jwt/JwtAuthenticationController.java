@@ -7,6 +7,7 @@ import org.springframework.security.authentication.*;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin
 public class JwtAuthenticationController {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenUtil jwtTokenUtil;
@@ -27,7 +28,7 @@ public class JwtAuthenticationController {
 
         final String token = jwtTokenUtil.generateToken(jwtUserDetails);
 
-        return ResponseEntity.ok(new JwtResponse(token));
+        return ResponseEntity.ok(new JwtResponse(token, jwtUserDetails.getUsername()));
     }
 
     @PostMapping(value = "/register")

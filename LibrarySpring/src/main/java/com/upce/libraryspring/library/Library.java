@@ -2,7 +2,6 @@ package com.upce.libraryspring.library;
 
 import com.upce.libraryspring.book.Book;
 import com.upce.libraryspring.user.User;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

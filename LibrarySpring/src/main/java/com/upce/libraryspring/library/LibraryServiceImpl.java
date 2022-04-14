@@ -28,9 +28,12 @@ public class LibraryServiceImpl implements LibraryService{
     }
 
     @Override
-    public LibraryDto getLibraryById(Integer id) {
+    public LibraryDto getLibraryByIdAndUserId(Integer id, Integer userId) {
         Library library = libraryRepository.findById(id).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.BAD_REQUEST, "Library with id: " + id + " was not found."));
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Library with id: " + id + " was not found."));
+        if (library.getUser().getId() != userId){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized.");
+        }
         return modelMapper.map(library, LibraryDto.class);
     }
 
@@ -43,12 +46,26 @@ public class LibraryServiceImpl implements LibraryService{
     }
 
     @Override
-    public LibraryDto updateLibraryById(Integer id, LibraryDto libraryDto) {
-        return null;
+    public LibraryDto updateLibraryByIdAndUserId(Integer id, LibraryDto libraryDto, Integer userId) {
+        Library library = libraryRepository.findById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Library with id: " + id + " was not found."));
+        if (library.getUser().getId() != userId){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized.");
+        }
+        library.setName(libraryDto.getName());
+        library.setDescription(libraryDto.getDescription());
+        library.setLibraryType(libraryDto.getLibraryType());
+        Library savedLibrary = libraryRepository.save(library);
+        return modelMapper.map(savedLibrary, LibraryDto.class);
     }
 
     @Override
-    public void deleteLibrary(Integer id) {
+    public void deleteLibrary(Integer id, Integer userId) {
+        Library library = libraryRepository.findById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Library with id: " + id + " was not found."));
+        if (library.getUser().getId() != userId){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized.");
+        }
         libraryRepository.deleteById(id);
     }
 }
