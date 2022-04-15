@@ -20,6 +20,9 @@ function Navbar() {
             {currentUser ? (
                 <div>
                     <li>
+                        <Link to={"/libraries"}>Libraries</Link>
+                    </li>
+                    <li>
                         <Link to={"/profile"}>{currentUser.username}</Link>
                     </li>
                     <li>
