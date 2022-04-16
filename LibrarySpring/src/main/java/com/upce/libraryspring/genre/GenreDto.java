@@ -1,6 +1,6 @@
 package com.upce.libraryspring.genre;
 
-import com.upce.libraryspring.book.BookDto;
+import com.upce.libraryspring.book.dto.BookDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

@@ -1,11 +1,11 @@
-package com.upce.libraryspring.book;
+package com.upce.libraryspring.book.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.upce.libraryspring.author.AuthorDto;
 import com.upce.libraryspring.genre.GenreDto;
 import com.upce.libraryspring.library.Library;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import com.upce.libraryspring.book.BookState;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -14,7 +14,9 @@ import javax.validation.constraints.PositiveOrZero;
 import java.io.Serializable;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
 @NoArgsConstructor
 public class BookDto implements Serializable {
     private Integer id;

@@ -1,15 +1,15 @@
 package com.upce.libraryspring.library;
 
-import com.upce.libraryspring.book.BookDto;
 import com.upce.libraryspring.jwt.JwtUserDetails;
+import com.upce.libraryspring.library.dto.LibraryDto;
+import com.upce.libraryspring.library.dto.LibraryDtoCreation;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/libraries")
+@CrossOrigin
 public class LibraryController {
     private final LibraryService libraryService;
 
@@ -18,10 +18,10 @@ public class LibraryController {
     }
 
     @GetMapping(value = {"", "/"})
-    public List<LibraryDto> getLibrariesByUserId(Authentication authentication) {
+    public Page<LibraryDto> getLibrariesByUserId(Authentication authentication, @RequestParam(defaultValue = "0") Integer pageIndex, @RequestParam(defaultValue = "3") Integer pageSize) {
         JwtUserDetails userDetails =
                 (JwtUserDetails) authentication.getPrincipal();
-        return libraryService.getLibrariesByUserId(userDetails.getId());
+        return libraryService.getLibrariesByUserId(userDetails.getId(), pageIndex, pageSize);
     }
 
     @GetMapping("/{id}")
@@ -32,10 +32,10 @@ public class LibraryController {
     }
 
     @PostMapping(value = {"", "/"})
-    public LibraryDto createLibrary(@RequestBody LibraryDto libraryDto, Authentication authentication) {
+    public LibraryDto createLibrary(@RequestBody LibraryDtoCreation libraryDtoCreation, Authentication authentication) {
         JwtUserDetails userDetails =
                 (JwtUserDetails) authentication.getPrincipal();
-        return libraryService.createLibrary(libraryDto, userDetails.getId());
+        return libraryService.createLibrary(libraryDtoCreation, userDetails.getId());
     }
 
     @PutMapping("/{id}")

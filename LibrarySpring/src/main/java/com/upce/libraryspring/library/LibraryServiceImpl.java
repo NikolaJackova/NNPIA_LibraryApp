@@ -1,7 +1,11 @@
 package com.upce.libraryspring.library;
 
+import com.upce.libraryspring.library.dto.LibraryDto;
+import com.upce.libraryspring.library.dto.LibraryDtoCreation;
 import com.upce.libraryspring.user.UserRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -22,9 +26,12 @@ public class LibraryServiceImpl implements LibraryService{
     }
 
     @Override
-    public List<LibraryDto> getLibrariesByUserId(Integer id) {
-        List<Library> byUserId = libraryRepository.findByUserId(id);
-        return byUserId.stream().map(library -> modelMapper.map(library, LibraryDto.class)).collect(Collectors.toList());
+    public Page<LibraryDto> getLibrariesByUserId(Integer id, Integer pageIndex, Integer pageSize) {
+        Page<Library> byUserId = libraryRepository.findByUserId(id, PageRequest.of(pageIndex, pageSize));
+        return byUserId.map(library -> {
+            LibraryDto libraryDto = modelMapper.map(library, LibraryDto.class);
+            return libraryDto;
+        });
     }
 
     @Override
@@ -38,9 +45,10 @@ public class LibraryServiceImpl implements LibraryService{
     }
 
     @Override
-    public LibraryDto createLibrary(LibraryDto libraryDto, Integer userId) {
-        Library library = modelMapper.map(libraryDto, Library.class);
-        library.setUser(userRepository.findById(userId).orElseThrow());
+    public LibraryDto createLibrary(LibraryDtoCreation libraryDtoCreation, Integer userId) {
+        Library library = modelMapper.map(libraryDtoCreation, Library.class);
+        library.setUser(userRepository.findById(userId).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "User with id: " + userId + " was not found.")));
         Library savedLibrary = libraryRepository.save(library);
         return modelMapper.map(savedLibrary, LibraryDto.class);
     }
