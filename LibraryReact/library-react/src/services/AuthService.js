@@ -1,9 +1,8 @@
-import axios from "axios";
+import * as AxiosAdapter from "../adapters/AxiosAdapter";
 
 class AuthService {
     login(username, password){
-        return axios
-            .post(`${process.env.REACT_APP_DEVELOPMENT}/authenticate`, {username, password})
+        return AxiosAdapter.postReq("/authenticate", {username, password})
             .then(response =>{
                 if (response.data.jwttoken) {
                     localStorage.setItem("user", JSON.stringify(response.data));
@@ -17,8 +16,7 @@ class AuthService {
     }
 
     register(username, email, password){
-        return axios
-            .post(`${process.env.REACT_APP_DEVELOPMENT}/register`, {username, email, password});
+        return AxiosAdapter.postReq("/register", {username, email, password});
     }
 
     getCurrentUser(){

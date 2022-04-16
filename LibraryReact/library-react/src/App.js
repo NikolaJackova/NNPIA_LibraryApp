@@ -1,3 +1,5 @@
+import "bootstrap/dist/css/bootstrap.min.css";
+import 'bootstrap/dist/js/bootstrap.bundle'
 import './App.css';
 import Register from "./components/auth/Register";
 import {Route, Routes} from "react-router-dom";
@@ -7,6 +9,7 @@ import Navbar from "./components/basic/Navbar";
 import Home from "./components/Home";
 import {UserProvider} from "./contexts/UserContext";
 import Libraries from "./components/library/Libraries";
+import Library from "./components/library/Library";
 
 function App() {
 
@@ -20,6 +23,7 @@ function App() {
                     <Route path='/login' element={<Login/>}/>
                     <Route path='/profile' element={< Profile/>}/>
                     <Route path='/libraries' element={< Libraries/>}/>
+                    <Route path="/libraries/:libraryId" element={<Library/>}/>
                 </Routes>
             </div>
         </UserProvider>

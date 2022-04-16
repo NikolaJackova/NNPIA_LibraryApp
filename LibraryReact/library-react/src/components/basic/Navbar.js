@@ -9,37 +9,34 @@ function Navbar() {
 
     const logOutHandler = () => {
         AuthService.logout();
-        setUserDetails({"logged":"false"});
+        setUserDetails({"logged": "false"});
     }
 
     return (
-        <div>
-            <li>
-                <Link to={"/"}>Home</Link>
-            </li>
-            {currentUser ? (
-                <div>
-                    <li>
-                        <Link to={"/libraries"}>Libraries</Link>
-                    </li>
-                    <li>
-                        <Link to={"/profile"}>{currentUser.username}</Link>
-                    </li>
-                    <li>
-                        <Link to={"/login"} onClick={logOutHandler}>Log out</Link>
-                    </li>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <Link className="navbar-brand" to={"/"}>Library App</Link>
+                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span className="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <Link class="nav-link" to={"/"}>Home</Link>
+                    {currentUser ? (
+                        <>
+                            <Link class="nav-link" to={"/libraries"}>Libraries</Link>
+                            <Link class="nav-link" to={"/profile"}>{currentUser.username}</Link>
+                            <Link class="nav-link" to={"/login"} onClick={logOutHandler}>Log out</Link>
+                        </>
+                    ) : (
+                        <>
+                            <Link class="nav-link" to={"/login"}>Log in</Link>
+                            <Link class="nav-link" to={"/register"}>Register</Link>
+                        </>
+                    )}
                 </div>
-            ) : (
-                <div>
-                    <li>
-                        <Link to={"/login"} >Log in</Link>
-                    </li>
-                    <li>
-                        <Link to={"/register"}>Register</Link>
-                    </li>
-                </div>
-            )}
-        </div>
+            </div>
+        </nav>
     )
 }
 

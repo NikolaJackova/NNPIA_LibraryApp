@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import AuthService from "../../services/AuthService";
-import axios from "axios";
 import authHeader from "../../services/AuthHeader";
+import * as AxiosAdapter from "../../adapters/AxiosAdapter";
 
 function Profile() {
     const [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
@@ -9,10 +9,7 @@ function Profile() {
     const [message, setMessage] = useState("");
 
     useEffect(() => {
-        axios
-            .get(`${process.env.REACT_APP_DEVELOPMENT}/users/${currentUser.username}`, {
-                headers: authHeader()
-            })
+        AxiosAdapter.getReq("/users/"+currentUser.username)
             .then(response => {
                 setUser(response.data);
             }, error => {
