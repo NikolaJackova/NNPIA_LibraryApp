@@ -3,13 +3,19 @@ import * as AxiosAdapter from "../../adapters/AxiosAdapter";
 import Table from "../basic/Table";
 import {Link} from "react-router-dom";
 
-function Books({libraryId}){
+function Books({libraryId}) {
 
     const [books, setBooks] = useState([]);
-    const [name, setName] = useState("")
-    const [description, setDescription] = useState("")
-    const [publishedYear, setPublishedYear] = useState(0)
-    const [isbn, setIsbn] = useState("")
+
+    const [name, setName] = useState("");
+    const [description, setDescription] = useState("");
+    const [publishedYear, setPublishedYear] = useState();
+    const [isbn, setIsbn] = useState("");
+    const [numberOfPages, setNumberOfPages] = useState();
+    const [score, setScore] = useState();
+    const [evaluation, setEvaluation] = useState("");
+    const [bookState, setBookState] = useState(undefined);
+
     const [message, setMessage] = useState("");
 
     const [pageCount, setPageCount] = useState(0);
@@ -34,13 +40,13 @@ function Books({libraryId}){
                 show: true
             },
             {
-                Header: "Published Year",
-                accessor: "publishedYear",
+                Header: "State",
+                accessor: "bookState",
                 show: true
             },
             {
-                Header: "ISBN",
-                accessor: "isbn",
+                Header: "Genres",
+                accessor: "genres",
                 show: true
             }
         ],
@@ -77,7 +83,11 @@ function Books({libraryId}){
             name: name,
             description: description,
             publishedYear: publishedYear,
-            isbn: isbn
+            isbn: isbn,
+            evaluation: evaluation,
+            score: score,
+            bookState: bookState,
+            numberOfPages: numberOfPages
         }
 
         AxiosAdapter.postReq(`/libraries/${libraryId}/books`, newBook)
@@ -96,6 +106,13 @@ function Books({libraryId}){
             }).finally(() => {
                 setName("");
                 setDescription("");
+                setNumberOfPages(undefined);
+                setScore(undefined);
+                setBookState(undefined);
+                setEvaluation("");
+                setIsbn("");
+                setPublishedYear(undefined);
+
             }
         );
     }
@@ -114,17 +131,66 @@ function Books({libraryId}){
         });
     }
     return (
-        <div>
-            <form onSubmit={addBookHandler}>
-                <label htmlFor="name">Name:</label>
-                <input type="text" name="name" value={name} onChange={(e) => setName(e.target.value)}/>
-                <label htmlFor="description">Description:</label>
-                <textarea name="description" value={description} onChange={(e) => setDescription(e.target.value)}/>
-                <label htmlFor="description">Published Year:</label>
-                <input type="number" name="publishedYear" value={publishedYear} onChange={(e) => setPublishedYear(e.target.value)}/>
-                <label htmlFor="isbn">Isbn:</label>
-                <input type="text" name="isbn" value={isbn} onChange={(e) => setIsbn(e.target.value)}/>
-                <input value="Add" type="submit"/>
+        <div class="row mt-5 justify-content-center">
+            <form class="col-xl-8" onSubmit={addBookHandler}>
+                <div className="row mb-3">
+                    <label className="col-sm-2 col-form-label" htmlFor="name">Name:</label>
+                    <div className="col-sm-6">
+                        <input class="form-control" type="text" name="name" value={name}
+                               onChange={(e) => setName(e.target.value)}/>
+                    </div>
+                    <label className="col-sm-2 col-form-label" htmlFor="state">State:</label>
+                    <div className="col-sm-2">
+                        <select className="form-select" value={bookState}
+                                onChange={(e) => setBookState(e.target.value)} aria-label="Select library type">
+                            <option value="READ">Read</option>
+                            <option value="PROCEEDING">Proceeding</option>
+                            <option value="PLANNED">Planned</option>
+                            <option value="DEFERRED">Deferred</option>
+                        </select>
+                    </div>
+                </div>
+                <div className="row mb-3">
+                    <label className="col-sm-2 col-form-label" htmlFor="description">Description:</label>
+                    <div className="col-sm-6">
+                        <textarea className="form-control" name="description" value={description}
+                                  onChange={(e) => setDescription(e.target.value)}/>
+                    </div>
+                    <label className="col-sm-2 col-form-label" htmlFor="year">Published Year:</label>
+                    <div className="col-sm-2">
+                        <input className="form-control" type="number" name="year" value={publishedYear}
+                               onChange={(e) => setPublishedYear(e.target.value)}/>
+                    </div>
+                </div>
+                <div className="row mb-3">
+                    <label className="col-sm-2 col-form-label" htmlFor="score">Score:</label>
+                    <div className="col-sm-2">
+                        <input className="form-control" type="number" name="score" value={score}
+                               onChange={(e) => setScore(e.target.value)}/>
+                    </div>
+                    <label className="col-sm-1 col-form-label" htmlFor="isbn">Isbn:</label>
+                    <div className="col-sm-3">
+                        <input className="form-control" type="text" name="isbn" value={isbn}
+                               onChange={(e) => setIsbn(e.target.value)}/>
+                    </div>
+                    <label className="col-sm-2 col-form-label" htmlFor="year">Number of Pages:</label>
+                    <div className="col-sm-2">
+                        <input className="form-control" type="number" name="year" value={numberOfPages}
+                               onChange={(e) => setNumberOfPages(e.target.value)}/>
+                    </div>
+                </div>
+                <div className="row mb-3">
+                    <label className="col-sm-2 col-form-label" htmlFor="evaluation">Evaluation:</label>
+                    <div className="col-sm-6">
+                        <textarea className="form-control" name="evaluation" value={evaluation}
+                                  onChange={(e) => setEvaluation(e.target.value)}/>
+                    </div>
+                </div>
+                <div className="row mb-3 justify-content-end">
+                    <div className="col-sm-3">
+                        <button className="btn btn-primary w-100" type="submit">Add</button>
+                    </div>
+                </div>
             </form>
             <Table columns={columns} data={books} fetchDataHandler={fetchData}
                    deleteHandler={deleteBookHandler} pageCount={pageCount}/>

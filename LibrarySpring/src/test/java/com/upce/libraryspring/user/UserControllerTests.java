@@ -1,45 +1,48 @@
 package com.upce.libraryspring.user;
 
+import com.upce.libraryspring.config.JwtTokenUtil;
+import com.upce.libraryspring.jwt.JwtUserDetailServiceImpl;
+import com.upce.libraryspring.jwt.JwtUserDetails;
 import com.upce.libraryspring.user.dto.UserDto;
+import com.upce.libraryspring.user.dto.UserDtoCreation;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.ArrayList;
 
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-@RunWith(SpringRunner.class)
-@WebMvcTest(UserController.class)
-//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-//@AutoConfigureMockMvc
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureWebTestClient
 public class UserControllerTests {
     @Autowired
-    private MockMvc mvc;
+    private WebTestClient webTestClient;
 
-    @MockBean
-    private UserService userService;
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
+    private JwtUserDetailServiceImpl jwtUserDetailServiceImpl;
 
     @Test
-    public void getAllUsersTest() throws Exception {
-        List<UserDto> listUserDto = new LinkedList<>();
-        when(userService.getUsers()).thenReturn(listUserDto);
+    public void getTest_withValidToken_receiveOk() throws Exception {
+        UserDtoCreation userDtoCreation = new UserDtoCreation();
+        userDtoCreation.setUsername("test-user-test");
+        userDtoCreation.setEmail("test-user@test-user.test-user");
+        userDtoCreation.setPassword("Heslo123");
+        UserDto user = jwtUserDetailServiceImpl.createUser(userDtoCreation);
+        String tokenString = jwtTokenUtil.generateToken(
+                new JwtUserDetails(user.getId(),userDtoCreation.getUsername(), userDtoCreation.getPassword(), new ArrayList<>()));
 
-        mvc.perform(MockMvcRequestBuilders
-                        .get("/users/")
-                        .accept(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isOk());
+        webTestClient
+                .get().uri("/users/test-user-test")
+                .headers(http -> http.setBearerAuth(tokenString))
+                .exchange()
+                .expectStatus().isOk();
     }
 }

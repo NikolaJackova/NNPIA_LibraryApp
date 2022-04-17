@@ -20,7 +20,7 @@ function Navbar() {
                         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                     <Link class="nav-link" to={"/"}>Home</Link>
                     {value ? (
                         <>

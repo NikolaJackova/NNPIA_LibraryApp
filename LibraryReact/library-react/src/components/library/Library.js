@@ -57,34 +57,39 @@ function Library() {
     }
 
     return (
-        <div>
-            <form onSubmit={saveLibraryHandler}>
-                <input type="hidden" value={id}/>
+        <div class="row mt-3 justify-content-center">
+            <h2>{name}</h2>
+            <form className="col-xl-8 mt-3" onSubmit={saveLibraryHandler}>
                 <div className="row mb-3">
-                    <label class="col-sm-2 col-form-label" htmlFor="name">Name:</label>
-                    <div className="col-sm-3">
+                    <label className="col-sm-2 col-form-label" htmlFor="name">Name:</label>
+                    <div className="col-sm-5">
                         <input className="form-control" type="text" name="name" value={name}
                                onChange={(e) => setName(e.target.value)}/>
                     </div>
-                    <label className="col-sm-2 col-form-label" htmlFor="name">TYPE TODO:</label>
+                    <label className="col-sm-2 col-form-label" htmlFor="name">Library Type:</label>
                     <div className="col-sm-3">
-                        <input className="form-control" type="text" name="name" value={libraryType}
-                               onChange={(e) => setLibraryType(e.target.value)}/>
+                        <select className="form-select" value={libraryType}
+                                onChange={(e) => setLibraryType(e.target.value)} aria-label="Select library type">
+                            <option value="PRIVATE">Private</option>
+                            <option value="PUBLIC">Public</option>
+                        </select>
                     </div>
                 </div>
                 <div className="row mb-3">
-                    <label class="col-sm-2 col-form-label" htmlFor="description">Description:</label>
-                    <div className="col-sm-6">
+                    <label className="col-sm-2 col-form-label" htmlFor="description">Description:</label>
+                    <div className="col-sm-10">
                         <textarea className="form-control" name="description" value={description}
-                              onChange={(e) => setDescription(e.target.value)}/>
+                                  onChange={(e) => setDescription(e.target.value)}/>
                     </div>
-                    <div className="col-sm-4">
-                        <button className="btn btn-primary" type="submit">Save</button>
+                </div>
+                <div className="row mb-3 justify-content-end">
+                    <div className="col-sm-3">
+                        <button className="btn btn-primary w-100" type="submit">Save</button>
                     </div>
                 </div>
             </form>
             {message}
-            <h2>Knihy</h2>
+            <h3>Knihy</h3>
             <Books libraryId={id}/>
         </div>
     );
