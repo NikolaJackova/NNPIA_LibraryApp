@@ -28,7 +28,8 @@ public class Library {
     @Column(name = "library_type")
     private LibraryType libraryType;
 
-    @OneToMany(mappedBy = "library", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "library", fetch = FetchType.LAZY, cascade = CascadeType.ALL,
+            orphanRemoval = true)
     private Set<Book> libraryBooks = new HashSet<>();
 
     @ManyToOne(optional = false)

@@ -3,13 +3,16 @@ package com.upce.libraryspring.book;
 import com.upce.libraryspring.genre.Genre;
 import com.upce.libraryspring.library.Library;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,4 +60,17 @@ public class Book {
     @ManyToOne
     @JoinColumn(name = "library_id", referencedColumnName = "id")
     private Library library;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Book book = (Book) o;
+        return id == book.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
+    }
 }

@@ -10,5 +10,5 @@ public interface BookService {
     BookDto getBookById(Integer id, Integer userId);
     BookDto createBook(BookDtoCreation bookDtoCreation, Integer libraryId, Integer userId);
     BookDto updateBookByIdAndLibraryId(Integer id, BookDto bookDto, Integer libraryId);
-    void deleteBook(Integer id, Integer libraryId);
+    void deleteBook(Integer libraryId, Integer id, Integer userId);
 }

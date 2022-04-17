@@ -16,7 +16,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    //TODO admin part??
     @GetMapping(value = {"", "/"})
     @PreAuthorize("hasAuthority('ADMIN')")
     public List<UserDto> getUsers() {

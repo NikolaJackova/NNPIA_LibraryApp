@@ -1,5 +1,6 @@
 package com.upce.libraryspring.user;
 
+import com.upce.libraryspring.role.Role;
 import com.upce.libraryspring.user.dto.UserDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -58,6 +59,9 @@ public class UserServiceImpl implements UserService {
     public void deleteByUsername(String username) {
         User user = userRepository.findByUsername(username).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "The user with username:" + username + " was not found."));
+        for (Role role : user.getUserRoles()){
+            user.removeRole(role);
+        }
         userRepository.deleteById(user.getId());
     }
 }

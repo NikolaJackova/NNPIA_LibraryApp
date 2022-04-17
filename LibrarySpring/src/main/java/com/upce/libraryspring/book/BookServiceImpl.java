@@ -25,13 +25,9 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public Page<BookDto> getBooksByLibraryId(Integer id, Integer pageIndex, Integer pageSize, Integer userId) {
-        Library libraryById = libraryRepository.findById(id).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "Library with id: " + id + " was not found."));
-        if (libraryById.getUser().getId() != userId){
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized.");
-        }
-        Page<Book> byLibraryId = bookRepository.findByLibraryId(libraryById.getId(), PageRequest.of(pageIndex, pageSize));
+    public Page<BookDto> getBooksByLibraryId(Integer libraryId, Integer pageIndex, Integer pageSize, Integer userId) {
+        Library library = checkAuthorizedUserAndLibrary(libraryId, userId);
+        Page<Book> byLibraryId = bookRepository.findByLibraryId(library.getId(), PageRequest.of(pageIndex, pageSize));
         return byLibraryId.map(book -> {
             BookDto bookDto = modelMapper.map(book, BookDto.class);
             return bookDto;
@@ -55,11 +51,7 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public BookDto createBook(BookDtoCreation bookDtoCreation, Integer libraryId, Integer userId) {
-        Library library = libraryRepository.findById(libraryId).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "Library with id: " + libraryId + " was not found."));
-        if (library.getUser().getId() != userId){
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized.");
-        }
+        Library library = checkAuthorizedUserAndLibrary(libraryId, userId);
         Book book = modelMapper.map(bookDtoCreation, Book.class);
         book.setLibrary(library);
         Book savedBook = bookRepository.save(book);
@@ -72,7 +64,17 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public void deleteBook(Integer id, Integer libraryId) {
+    public void deleteBook(Integer libraryId, Integer id,  Integer userId) {
+        checkAuthorizedUserAndLibrary(libraryId, userId);
+        bookRepository.deleteById(id);
+    }
 
+    private Library checkAuthorizedUserAndLibrary(Integer libraryId, Integer userId){
+        Library library = libraryRepository.findById(libraryId).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Library with id: " + libraryId + " was not found."));
+        if (library.getUser().getId() != userId){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized.");
+        }
+        return library;
     }
 }

@@ -40,7 +40,7 @@ public class JwtUserDetailServiceImpl implements UserDetailsService {
 
     @Transactional
     public UserDto createUser(UserDtoCreation userDtoCreation) {
-        CheckUsernameAndEmail(userDtoCreation);
+        checkUsernameAndEmail(userDtoCreation);
         User user = modelMapper.map(userDtoCreation, User.class);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.getUserRoles().add(roleService.getRoleByRoleType(RoleType.USER));
@@ -48,7 +48,7 @@ public class JwtUserDetailServiceImpl implements UserDetailsService {
         return modelMapper.map(savedUser, UserDto.class);
     }
 
-    private void CheckUsernameAndEmail(UserDtoCreation userDtoCreation){
+    private void checkUsernameAndEmail(UserDtoCreation userDtoCreation){
         User existingUsername = userRepository.findByUsername(userDtoCreation.getUsername()).orElse(null);
         if (existingUsername != null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User with username: " + userDtoCreation.getUsername() + " already exists.");

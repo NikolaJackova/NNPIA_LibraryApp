@@ -63,7 +63,11 @@ public class User {
     @JoinTable(name = "USER_ROLE", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> userRoles = new HashSet<>();
 
-    //TODO why there must be this implementation - else StackOverflow when creating new user
+    public void removeRole(Role role){
+        this.userRoles.remove(role);
+        role.getRoleUsers().remove(this);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
