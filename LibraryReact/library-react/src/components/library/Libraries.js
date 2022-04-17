@@ -1,10 +1,12 @@
 import {useMemo, useEffect, useState, useCallback, useRef} from "react";
 import Table from "../basic/Table";
 import * as AxiosAdapter from "../../adapters/AxiosAdapter";
+import {Link} from "react-router-dom";
 
 function Libraries() {
-    const [name, setName] = useState("")
-    const [description, setDescription] = useState("")
+    const [name, setName] = useState("");
+    const [description, setDescription] = useState("");
+    const [libraryType, setLibraryType] = useState();
     const [libraries, setLibraries] = useState([]);
     const [message, setMessage] = useState("");
 
@@ -12,26 +14,31 @@ function Libraries() {
     const fetchIdRef = useRef(0);
 
     const columns = useMemo(
-            () => [
-                {
-                    Header: "Id",
-                    accessor: "id",
-                    show: false
-                },
-                {
-                    Header: "Name",
-                    accessor: "name",
-                    Cell: props => <a href={"/libraries/" + props.row.values.id}>{props.value}</a>,
-                    show: true
-                },
-                {
-                    Header: "Description",
-                    accessor: "description",
-                    show: true
-                }
-            ],
-            []
-        );
+        () => [
+            {
+                Header: "Id",
+                accessor: "id",
+                show: false
+            },
+            {
+                Header: "Name",
+                accessor: "name",
+                Cell: props => <Link to={"/libraries/" + props.row.values.id}>{props.value}</Link>,
+                show: true
+            },
+            {
+                Header: "Description",
+                accessor: "description",
+                show: true
+            },
+            {
+                Header: "Type",
+                accessor: "libraryType",
+                show: true
+            }
+        ],
+        []
+    );
 
     const fetchLibraries = (({pageIndex, pageSize}) => {
         AxiosAdapter.getReq(`/libraries?pageIndex=${pageIndex}&pageSize=${pageSize}`)
@@ -61,7 +68,8 @@ function Libraries() {
 
         const newLibrary = {
             name: name,
-            description: description
+            description: description,
+            libraryType: libraryType
         }
 
         AxiosAdapter.postReq("/libraries", newLibrary)
@@ -80,6 +88,7 @@ function Libraries() {
             }).finally(() => {
                 setName("");
                 setDescription("");
+                setLibraryType(null);
             }
         );
     }
@@ -101,12 +110,30 @@ function Libraries() {
     return (
         <div>
             <form onSubmit={addLibraryHandler}>
-                <label htmlFor="name">Name:</label>
-                <input type="text" name="name" value={name} onChange={(e) => setName(e.target.value)}/>
-                <label htmlFor="description">Description:</label>
-                <textarea name="description" value={description} onChange={(e) => setDescription(e.target.value)}/>
-                <input value="Add" type="submit"/>
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label" htmlFor="name">Name:</label>
+                    <div class="col-sm-4">
+                        <input class="form-control" type="text" name="name" value={name}
+                               onChange={(e) => setName(e.target.value)}/>
+                    </div>
+                    <label className="col-sm-2 col-form-label" htmlFor="name">TYPE TODO:</label>
+                    <div class="col-sm-3">
+                        <input className="form-control" type="text" name="name" value={libraryType}
+                               onChange={(e) => setLibraryType(e.target.value)}/>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label" htmlFor="description">Description:</label>
+                    <div class="col-sm-6">
+                        <textarea class="form-control" name="description" value={description}
+                                  onChange={(e) => setDescription(e.target.value)}/>
+                    </div>
+                </div>
+                <div className="row mb-3">
+                    <button className="btn btn-primary" type="submit">Add</button>
+                </div>
             </form>
+            <h2>Libraries</h2>
             <Table columns={columns} data={libraries} fetchDataHandler={fetchData}
                    deleteHandler={deleteLibraryHandler} pageCount={pageCount}/>
             {message}

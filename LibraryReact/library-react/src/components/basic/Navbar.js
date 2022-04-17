@@ -5,15 +5,15 @@ import {userContext} from "../../contexts/UserContext";
 
 function Navbar() {
     const [currentUser] = useState(AuthService.getCurrentUser());
-    const [userDetails, setUserDetails] = useContext(userContext);
+    const [value, setValue] = useContext(userContext);
 
     const logOutHandler = () => {
         AuthService.logout();
-        setUserDetails({"logged": "false"});
+        setValue(undefined);
     }
 
     return (
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-md navbar-light bg-light">
             <div class="container-fluid">
                 <Link className="navbar-brand" to={"/"}>Library App</Link>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -22,7 +22,7 @@ function Navbar() {
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <Link class="nav-link" to={"/"}>Home</Link>
-                    {currentUser ? (
+                    {value ? (
                         <>
                             <Link class="nav-link" to={"/libraries"}>Libraries</Link>
                             <Link class="nav-link" to={"/profile"}>{currentUser.username}</Link>

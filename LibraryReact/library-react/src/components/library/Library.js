@@ -60,11 +60,28 @@ function Library() {
         <div>
             <form onSubmit={saveLibraryHandler}>
                 <input type="hidden" value={id}/>
-                <label htmlFor="name">Name:</label>
-                <input type="text" name="name" value={name} onChange={(e) => setName(e.target.value)}/>
-                <label htmlFor="description">Description:</label>
-                <textarea name="description" value={description} onChange={(e) => setDescription(e.target.value)}/>
-                <input value="Save" type="submit"/>
+                <div className="row mb-3">
+                    <label class="col-sm-2 col-form-label" htmlFor="name">Name:</label>
+                    <div className="col-sm-3">
+                        <input className="form-control" type="text" name="name" value={name}
+                               onChange={(e) => setName(e.target.value)}/>
+                    </div>
+                    <label className="col-sm-2 col-form-label" htmlFor="name">TYPE TODO:</label>
+                    <div className="col-sm-3">
+                        <input className="form-control" type="text" name="name" value={libraryType}
+                               onChange={(e) => setLibraryType(e.target.value)}/>
+                    </div>
+                </div>
+                <div className="row mb-3">
+                    <label class="col-sm-2 col-form-label" htmlFor="description">Description:</label>
+                    <div className="col-sm-6">
+                        <textarea className="form-control" name="description" value={description}
+                              onChange={(e) => setDescription(e.target.value)}/>
+                    </div>
+                    <div className="col-sm-4">
+                        <button className="btn btn-primary" type="submit">Save</button>
+                    </div>
+                </div>
             </form>
             {message}
             <h2>Knihy</h2>

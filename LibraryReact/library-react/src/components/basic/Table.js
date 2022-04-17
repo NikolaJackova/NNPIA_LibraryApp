@@ -1,5 +1,6 @@
 import React, {useEffect} from "react";
 import {useTable, usePagination} from "react-table";
+import {Link} from "react-router-dom";
 
 function Table({columns, data, fetchDataHandler, deleteHandler, pageCount: controlledPageCount}) {
     const {
@@ -24,7 +25,7 @@ function Table({columns, data, fetchDataHandler, deleteHandler, pageCount: contr
             data: data,
             initialState: {
                 pageIndex: 0,
-                pageSize: 1,
+                pageSize: 3,
                 hiddenColumns: columns
                     .filter((column) => !column.show)
                     .map((column) => column.id),
@@ -40,21 +41,6 @@ function Table({columns, data, fetchDataHandler, deleteHandler, pageCount: contr
 
     return (
         <>
-                  <pre>
-        <code>
-          {JSON.stringify(
-              {
-                  pageIndex,
-                  pageSize,
-                  pageCount,
-                  canNextPage,
-                  canPreviousPage,
-              },
-              null,
-              2
-          )}
-        </code>
-      </pre>
             <table class="table table-hover" {...getTableProps()}>
                 <thead>
                 {headerGroups.map(headerGroup => (<tr {...headerGroup.getHeaderGroupProps()}>
@@ -69,65 +55,58 @@ function Table({columns, data, fetchDataHandler, deleteHandler, pageCount: contr
                         {row.cells.map(cell => {
                             return <td {...cell.getCellProps()}>{cell.render("Cell")}</td>;
                         })}
-                        <td><button class="btn btn-primary" onClick={() => {
-                            deleteHandler(row.values.id);
-                        }}>Delete
-                        </button></td>
+                        <td>
+                            <button class="btn btn-primary" onClick={() => {
+                                deleteHandler(row.values.id);
+                            }}>Delete
+                            </button>
+                        </td>
                     </tr>);
                 })}
 
                 </tbody>
             </table>
             <nav aria-label="Search results pages">
-                <ul className="pagination">
-                    <li className="page-item"><a className="page-link" href="#">Previous</a></li>
-                    <li className="page-item"><a className="page-link" href="#">1</a></li>
-                    <li className="page-item"><a className="page-link" href="#">2</a></li>
-                    <li className="page-item"><a className="page-link" href="#">3</a></li>
-                    <li className="page-item"><a className="page-link" href="#">Next</a></li>
+                <ul className="pagination justify-content-center">
+                    <li className="page-item"><button className="btn btn-outline-primary" onClick={() => gotoPage(0)}
+                                                 disabled={!canPreviousPage} aria-label="First">
+                        <span aria-hidden="true">&laquo;</span>
+                    </button></li>
+                    <li className="page-item"><button className="btn btn-outline-primary" onClick={() => previousPage()}
+                                                 disabled={!canPreviousPage}>Previous</button></li>
+                    <li className="page-item"><button className="btn btn-outline-primary" onClick={() => nextPage()}
+                                                 disabled={!canNextPage}>Next</button></li>
+                    <li className="page-item"><button className="btn btn-outline-primary" onClick={() => gotoPage(pageCount - 1)}
+                                                 disabled={!canNextPage} aria-label="Last">
+                        <span aria-hidden="true">&raquo;</span>
+                    </button></li>
                 </ul>
-                <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-                    {'<<'}
-                </button>{' '}
-                <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-                    {'<'}
-                </button>{' '}
-                <button onClick={() => nextPage()} disabled={!canNextPage}>
-                    {'>'}
-                </button>{' '}
-                <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
-                    {'>>'}
-                </button>{' '}
-                <span>
-          Page{' '}
-                    <strong>
-            {pageIndex + 1} of {pageOptions.length}
-          </strong>{' '}
-        </span>
-                <span>
-          | Go to page:{' '}
-                    <input
-                        type="number"
-                        defaultValue={pageIndex + 1}
-                        onChange={e => {
-                            const page = e.target.value ? Number(e.target.value) - 1 : 0
-                            gotoPage(page)
-                        }}
-                        style={{ width: '100px' }}
-                    />
-        </span>{' '}
-                <select
-                    value={pageSize}
-                    onChange={e => {
-                        setPageSize(Number(e.target.value))
-                    }}
-                >
-                    {[1, 2, 3, 10, 20, 30, 40, 50].map(pageSize => (
-                        <option key={pageSize} value={pageSize}>
-                            Show {pageSize}
-                        </option>
-                    ))}
-                </select>
+                <div class="container">
+                    <div class="row justify-content-md-center">
+                        <div class="col-2">
+                            <p>Page{' '}<strong>{pageIndex + 1} of {pageOptions.length}</strong>{' '}</p>
+                        </div>
+                        <div class="col-2">
+                            <input className="form-control" type="number" defaultValue={pageIndex + 1}
+                                   onChange={e => {
+                                       const page = e.target.value ? Number(e.target.value) - 1 : 0;
+                                       gotoPage(page)
+                                   }}/>
+                        </div>
+                        <div class="col-3">
+                            <select className="form-select" value={pageSize} onChange={e => {
+                                setPageSize(Number(e.target.value))
+                            }}>
+                                {[3, 10, 20, 30, 40, 50].map(pageSize => (
+                                    <option key={pageSize} value={pageSize}>
+                                        Show {pageSize}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
             </nav>
         </>);
 }

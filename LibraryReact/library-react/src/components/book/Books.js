@@ -1,6 +1,7 @@
 import {useCallback, useMemo, useRef, useState} from "react";
 import * as AxiosAdapter from "../../adapters/AxiosAdapter";
 import Table from "../basic/Table";
+import {Link} from "react-router-dom";
 
 function Books({libraryId}){
 
@@ -24,7 +25,7 @@ function Books({libraryId}){
             {
                 Header: "Name",
                 accessor: "name",
-                Cell: props => <a href={"/libraries/" + props.row.values.id}>{props.value}</a>,
+                Cell: props => <Link to={`/libraries/${libraryId}/books/${props.row.values.id}`}>{props.value}</Link>,
                 show: true
             },
             {

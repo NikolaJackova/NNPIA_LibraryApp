@@ -1,6 +1,9 @@
 import * as AxiosAdapter from "../adapters/AxiosAdapter";
+import {useContext} from "react";
+import {userContext} from "../contexts/UserContext";
 
 class AuthService {
+
     login(username, password){
         return AxiosAdapter.postReq("/authenticate", {username, password})
             .then(response =>{
