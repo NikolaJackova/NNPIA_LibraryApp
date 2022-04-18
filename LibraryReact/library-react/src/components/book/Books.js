@@ -111,7 +111,6 @@ function Books({libraryId}) {
                 setEvaluation("");
                 setIsbn("");
                 setPublishedYear(undefined);
-
             }
         );
     }

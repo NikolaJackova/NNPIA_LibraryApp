@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import * as AxiosAdapter from "../../adapters/AxiosAdapter";
 import {useParams} from "react-router";
+import Genres from "../genre/Genres";
 
 function Book() {
     const params = useParams();
@@ -13,6 +14,7 @@ function Book() {
     const [score, setScore] = useState();
     const [evaluation, setEvaluation] = useState("");
     const [bookState, setBookState] = useState("READ");
+    const [genres, setGenres] = useState([]);
 
     const [message, setMessage] = useState("");
 
@@ -27,6 +29,7 @@ function Book() {
                     setEvaluation(response.data.evaluation);
                     setIsbn(response.data.isbn);
                     setPublishedYear(response.data.publishedYear);
+                    setGenres(response.data.bookGenres);
                 }, error => {
                     const resMessage =
                         (error.response &&
@@ -40,6 +43,38 @@ function Book() {
 
     const saveBookHandler = event => {
         event.preventDefault();
+
+        const modifiedBook = {
+            name: name,
+            description: description,
+            publishedYear: publishedYear,
+            isbn: isbn,
+            evaluation: evaluation,
+            score: score,
+            bookState: bookState,
+            numberOfPages: numberOfPages,
+            bookGenres: genres
+        }
+
+        AxiosAdapter.putReq(`/libraries/${params.libraryId}/books/${params.bookId}`, modifiedBook)
+            .then(response => {
+                setName(response.data.name);
+                setDescription(response.data.description);
+                setNumberOfPages(response.data.numberOfPages);
+                setScore(response.data.score);
+                setEvaluation(response.data.evaluation);
+                setIsbn(response.data.isbn);
+                setPublishedYear(response.data.publishedYear);
+                setGenres(response.data.bookGenres);
+            }, error => {
+                const resMessage =
+                    (error.response &&
+                        error.response.data &&
+                        error.response.data.message) ||
+                    error.message ||
+                    error.toString();
+                setMessage(resMessage)
+            });
     }
 
     return (
@@ -96,6 +131,9 @@ function Book() {
                         <textarea className="form-control" name="evaluation" value={evaluation}
                                   onChange={(e) => setEvaluation(e.target.value)}/>
                 </div>
+            </div>
+            <div className="row mb-3">
+                <Genres bookGenres={genres} setBookGenres={setGenres}/>
             </div>
             <div className="row mb-3 justify-content-end">
                 <div className="col-md-3">
