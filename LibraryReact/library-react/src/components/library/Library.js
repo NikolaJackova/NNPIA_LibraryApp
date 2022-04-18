@@ -57,7 +57,7 @@ function Library() {
     }
 
     return (
-        <div class="row mt-3 justify-content-center">
+        <div class="row justify-content-center">
             <h2>{name}</h2>
             <form className="col-xl-8 mt-3" onSubmit={saveLibraryHandler}>
                 <div className="row mb-3">

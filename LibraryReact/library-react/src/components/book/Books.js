@@ -14,7 +14,7 @@ function Books({libraryId}) {
     const [numberOfPages, setNumberOfPages] = useState();
     const [score, setScore] = useState();
     const [evaluation, setEvaluation] = useState("");
-    const [bookState, setBookState] = useState(undefined);
+    const [bookState, setBookState] = useState("READ");
 
     const [message, setMessage] = useState("");
 
@@ -108,7 +108,6 @@ function Books({libraryId}) {
                 setDescription("");
                 setNumberOfPages(undefined);
                 setScore(undefined);
-                setBookState(undefined);
                 setEvaluation("");
                 setIsbn("");
                 setPublishedYear(undefined);
@@ -132,18 +131,18 @@ function Books({libraryId}) {
     }
     return (
         <div class="row mt-5 justify-content-center">
-            <form class="col-xl-8" onSubmit={addBookHandler}>
+            <form class="col-md-12" onSubmit={addBookHandler}>
                 <div className="row mb-3">
-                    <label className="col-sm-2 col-form-label" htmlFor="name">Name:</label>
-                    <div className="col-sm-6">
+                    <label className="col-md-2 col-form-label" htmlFor="name">Name:</label>
+                    <div className="col-md-5">
                         <input class="form-control" type="text" name="name" value={name}
                                onChange={(e) => setName(e.target.value)}/>
                     </div>
-                    <label className="col-sm-2 col-form-label" htmlFor="state">State:</label>
-                    <div className="col-sm-2">
+                    <label className="col-md-2 col-form-label" htmlFor="state">State:</label>
+                    <div className="col-md-3">
                         <select className="form-select" value={bookState}
                                 onChange={(e) => setBookState(e.target.value)} aria-label="Select library type">
-                            <option value="READ">Read</option>
+                            <option value="READ" defaultValue>Read</option>
                             <option value="PROCEEDING">Proceeding</option>
                             <option value="PLANNED">Planned</option>
                             <option value="DEFERRED">Deferred</option>
@@ -151,43 +150,43 @@ function Books({libraryId}) {
                     </div>
                 </div>
                 <div className="row mb-3">
-                    <label className="col-sm-2 col-form-label" htmlFor="description">Description:</label>
-                    <div className="col-sm-6">
+                    <label className="col-md-2 col-form-label" htmlFor="description">Description:</label>
+                    <div className="col-md-6">
                         <textarea className="form-control" name="description" value={description}
                                   onChange={(e) => setDescription(e.target.value)}/>
                     </div>
-                    <label className="col-sm-2 col-form-label" htmlFor="year">Published Year:</label>
-                    <div className="col-sm-2">
+                    <label className="col-md-2 col-form-label" htmlFor="year">Published Year:</label>
+                    <div className="col-md-2">
                         <input className="form-control" type="number" name="year" value={publishedYear}
                                onChange={(e) => setPublishedYear(e.target.value)}/>
                     </div>
                 </div>
                 <div className="row mb-3">
-                    <label className="col-sm-2 col-form-label" htmlFor="score">Score:</label>
-                    <div className="col-sm-2">
+                    <label className="col-md-2 col-form-label" htmlFor="score">Score:</label>
+                    <div className="col-md-2">
                         <input className="form-control" type="number" name="score" value={score}
                                onChange={(e) => setScore(e.target.value)}/>
                     </div>
-                    <label className="col-sm-1 col-form-label" htmlFor="isbn">Isbn:</label>
-                    <div className="col-sm-3">
+                    <label className="col-md-1 col-form-label" htmlFor="isbn">Isbn:</label>
+                    <div className="col-md-3">
                         <input className="form-control" type="text" name="isbn" value={isbn}
                                onChange={(e) => setIsbn(e.target.value)}/>
                     </div>
-                    <label className="col-sm-2 col-form-label" htmlFor="year">Number of Pages:</label>
-                    <div className="col-sm-2">
+                    <label className="col-md-2 col-form-label" htmlFor="year">Number of Pages:</label>
+                    <div className="col-md-2">
                         <input className="form-control" type="number" name="year" value={numberOfPages}
                                onChange={(e) => setNumberOfPages(e.target.value)}/>
                     </div>
                 </div>
                 <div className="row mb-3">
-                    <label className="col-sm-2 col-form-label" htmlFor="evaluation">Evaluation:</label>
-                    <div className="col-sm-6">
+                    <label className="col-md-2 col-form-label" htmlFor="evaluation">Evaluation:</label>
+                    <div className="col-md-6">
                         <textarea className="form-control" name="evaluation" value={evaluation}
                                   onChange={(e) => setEvaluation(e.target.value)}/>
                     </div>
                 </div>
                 <div className="row mb-3 justify-content-end">
-                    <div className="col-sm-3">
+                    <div className="col-md-3">
                         <button className="btn btn-primary w-100" type="submit">Add</button>
                     </div>
                 </div>

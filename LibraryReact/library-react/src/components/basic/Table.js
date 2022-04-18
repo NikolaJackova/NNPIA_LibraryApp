@@ -1,6 +1,5 @@
 import React, {useEffect} from "react";
-import {useTable, usePagination} from "react-table";
-import {Link} from "react-router-dom";
+import {useTable, usePagination, useSortBy} from "react-table";
 
 function Table({columns, data, fetchDataHandler, deleteHandler, pageCount: controlledPageCount}) {
     const {
@@ -31,9 +30,11 @@ function Table({columns, data, fetchDataHandler, deleteHandler, pageCount: contr
                     .map((column) => column.id),
             },
             manualPagination: true,
+            autoResetPage: false,
             pageCount: controlledPageCount
         },
-        usePagination);
+        useSortBy,
+        usePagination );
 
     useEffect(() => {
         fetchDataHandler && fetchDataHandler({pageIndex, pageSize})
@@ -45,7 +46,9 @@ function Table({columns, data, fetchDataHandler, deleteHandler, pageCount: contr
                 <thead>
                 {headerGroups.map(headerGroup => (<tr {...headerGroup.getHeaderGroupProps()}>
                     {headerGroup.headers.map(column => (
-                        <th {...column.getHeaderProps()}>{column.render("Header")}</th>))}
+                        <th {...column.getHeaderProps(column.getSortByToggleProps())}>{column.render("Header")}
+                            <span>{column.isSorted ? column.isSortedDesc ? ' 🔽' : ' 🔼' : ''}</span>
+                        </th>))}
                 </tr>))}
                 </thead>
                 <tbody {...getTableBodyProps()}>
@@ -68,18 +71,28 @@ function Table({columns, data, fetchDataHandler, deleteHandler, pageCount: contr
             </table>
             <nav aria-label="Search results pages">
                 <ul className="pagination justify-content-center">
-                    <li className="page-item"><button className="btn btn-outline-primary" onClick={() => gotoPage(0)}
-                                                 disabled={!canPreviousPage} aria-label="First">
-                        <span aria-hidden="true">&laquo;</span>
-                    </button></li>
-                    <li className="page-item"><button className="btn btn-outline-primary" onClick={() => previousPage()}
-                                                 disabled={!canPreviousPage}>Previous</button></li>
-                    <li className="page-item"><button className="btn btn-outline-primary" onClick={() => nextPage()}
-                                                 disabled={!canNextPage}>Next</button></li>
-                    <li className="page-item"><button className="btn btn-outline-primary" onClick={() => gotoPage(pageCount - 1)}
-                                                 disabled={!canNextPage} aria-label="Last">
-                        <span aria-hidden="true">&raquo;</span>
-                    </button></li>
+                    <li className="page-item">
+                        <button className="btn btn-outline-primary" onClick={() => gotoPage(0)}
+                                disabled={!canPreviousPage} aria-label="First">
+                            <span aria-hidden="true">&laquo;</span>
+                        </button>
+                    </li>
+                    <li className="page-item">
+                        <button className="btn btn-outline-primary" onClick={() => previousPage()}
+                                disabled={!canPreviousPage}>Previous
+                        </button>
+                    </li>
+                    <li className="page-item">
+                        <button className="btn btn-outline-primary" onClick={() => nextPage()}
+                                disabled={!canNextPage}>Next
+                        </button>
+                    </li>
+                    <li className="page-item">
+                        <button className="btn btn-outline-primary" onClick={() => gotoPage(pageCount - 1)}
+                                disabled={!canNextPage} aria-label="Last">
+                            <span aria-hidden="true">&raquo;</span>
+                        </button>
+                    </li>
                 </ul>
                 <div class="container">
                     <div class="row justify-content-md-center">

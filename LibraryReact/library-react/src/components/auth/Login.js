@@ -34,7 +34,7 @@ function Login() {
     }
 
     return (
-        <div class="row mt-5 justify-content-center">
+        <div class="row justify-content-center">
             <form class="col-lg-6" onSubmit={loginHandler}>
                 <div class="row mb-3">
                     <label class="col-sm-2 col-form-label" htmlFor="username">Username:</label>

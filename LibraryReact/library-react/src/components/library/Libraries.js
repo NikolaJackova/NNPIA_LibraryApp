@@ -1,4 +1,4 @@
-import {useMemo, useEffect, useState, useCallback, useRef} from "react";
+import {useMemo, useState, useCallback, useRef} from "react";
 import Table from "../basic/Table";
 import * as AxiosAdapter from "../../adapters/AxiosAdapter";
 import {Link} from "react-router-dom";
@@ -6,7 +6,7 @@ import {Link} from "react-router-dom";
 function Libraries() {
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
-    const [libraryType, setLibraryType] = useState();
+    const [libraryType, setLibraryType] = useState("PRIVATE");
     const [libraries, setLibraries] = useState([]);
     const [message, setMessage] = useState("");
 
@@ -108,7 +108,7 @@ function Libraries() {
     }
 
     return (
-        <div class="row mt-5 justify-content-center">
+        <div class="row justify-content-center">
             <form class="col-xl-8" onSubmit={addLibraryHandler}>
                 <div class="row mb-3">
                     <label class="col-sm-2 col-form-label" htmlFor="name">Name:</label>
@@ -120,7 +120,7 @@ function Libraries() {
                     <div class="col-sm-3">
                         <select className="form-select" value={libraryType}
                                 onChange={(e) => setLibraryType(e.target.value)} aria-label="Select library type">
-                            <option value="PRIVATE">Private</option>
+                            <option value="PRIVATE" defaultValue>Private</option>
                             <option value="PUBLIC">Public</option>
                         </select>
                     </div>

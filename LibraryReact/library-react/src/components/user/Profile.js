@@ -1,15 +1,14 @@
 import {useEffect, useState} from "react";
 import AuthService from "../../services/AuthService";
-import authHeader from "../../services/AuthHeader";
 import * as AxiosAdapter from "../../adapters/AxiosAdapter";
 
 function Profile() {
-    const [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
+    const [currentUser] = useState(AuthService.getCurrentUser());
     const [user, setUser] = useState([]);
     const [message, setMessage] = useState("");
 
     const [email, setEmail] = useState("");
-    const [birthDate, setBirthDate] = useState(undefined);
+    const [birthDate, setBirthDate] = useState(new Date());
 
     useEffect(() => {
         AxiosAdapter.getReq("/users/"+currentUser.username)
@@ -52,8 +51,8 @@ function Profile() {
     }
 
     return (
-        <div class="row mt-5 justify-content-center">
-            <form class="col-lg-6" onSubmit={editUserHandler}>
+        <div className="row justify-content-center">
+            <form className="col-lg-6" onSubmit={editUserHandler}>
                 <div className="row mb-3 align-items-center">
                     <label className="col-sm-2 col-form-label" htmlFor="username">Username:</label>
                     <div className="col-sm-3">
