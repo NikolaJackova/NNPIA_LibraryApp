@@ -3,6 +3,7 @@ package com.upce.libraryspring.book;
 import com.upce.libraryspring.book.dto.BookDto;
 import com.upce.libraryspring.book.dto.BookDtoCreation;
 import com.upce.libraryspring.jwt.JwtUserDetails;
+import com.upce.libraryspring.library.dto.LibraryDto;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,13 @@ public class BookController {
         JwtUserDetails userDetails =
                 (JwtUserDetails) authentication.getPrincipal();
         return bookService.getBooksByLibraryId(libraryId, pageIndex, pageSize, userDetails.getId());
+    }
+
+    @GetMapping("/libraries/{libraryId}/books/{id}")
+    public BookDto getBookById(@PathVariable Integer libraryId, @PathVariable Integer id, Authentication authentication) {
+        JwtUserDetails userDetails =
+                (JwtUserDetails) authentication.getPrincipal();
+        return bookService.getBookById(id, userDetails.getId());
     }
 
     @PostMapping(value = {"/libraries/{libraryId}/books"})

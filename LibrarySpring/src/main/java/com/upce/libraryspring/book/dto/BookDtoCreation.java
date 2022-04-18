@@ -31,6 +31,7 @@ public class BookDtoCreation implements Serializable {
     @Min(0)
     private Integer score;
     private String evaluation;
+    private Integer publishedYear;
     private BookState bookState;
     private Set<GenreDto> bookGenres;
     private Set<AuthorDto> booAuthors;

@@ -43,9 +43,7 @@ public class BookServiceImpl implements BookService{
     public BookDto getBookById(Integer id, Integer userId) {
         Book book = bookRepository.findById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Book with id: " + id + " was not found."));
-        if (book.getLibrary().getUser().getId() != userId){
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized.");
-        }
+        checkAuthorizedUserAndLibrary(book.getLibrary().getId(), userId);
         return modelMapper.map(book, BookDto.class);
     }
 

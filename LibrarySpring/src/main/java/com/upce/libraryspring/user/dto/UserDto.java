@@ -28,6 +28,6 @@ public class UserDto implements Serializable {
     private Date birthDate;
     private Set<RoleDto> userRoles;
     private Set<LibraryDto> userLibraries;
-    @JsonFormat(pattern="dd. MM. yyyy")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Timestamp created;
 }
