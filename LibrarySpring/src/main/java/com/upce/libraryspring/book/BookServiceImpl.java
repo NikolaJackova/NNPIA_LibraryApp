@@ -2,6 +2,8 @@ package com.upce.libraryspring.book;
 
 import com.upce.libraryspring.book.dto.BookDto;
 import com.upce.libraryspring.book.dto.BookDtoCreation;
+import com.upce.libraryspring.genre.Genre;
+import com.upce.libraryspring.genre.GenreDto;
 import com.upce.libraryspring.library.Library;
 import com.upce.libraryspring.library.LibraryRepository;
 import com.upce.libraryspring.library.dto.LibraryDto;
@@ -11,6 +13,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class BookServiceImpl implements BookService{
@@ -57,8 +62,23 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public BookDto updateBookByIdAndLibraryId(Integer id, BookDto bookDto, Integer libraryId) {
-        return null;
+    public BookDto updateBookById(Integer id, BookDto bookDto, Integer libraryId, Integer userId) {
+        checkAuthorizedUserAndLibrary(libraryId, userId);
+        Book book = bookRepository.findById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Book with id: " + id + " was not found."));
+        book.setName(bookDto.getName());
+        book.setDescription(bookDto.getDescription());
+        book.setEvaluation(bookDto.getEvaluation());
+        book.setScore(bookDto.getScore());
+        book.setPublishedYear(bookDto.getPublishedYear());
+        book.setIsbn(bookDto.getIsbn());
+        book.setNumberOfPages(bookDto.getNumberOfPages());
+
+        Set<Genre> genres = bookDto.getBookGenres().stream().map(genre -> modelMapper.map(genre, Genre.class)).collect(Collectors.toSet());
+        book.setBookGenres(genres);
+
+        Book savedBook = bookRepository.save(book);
+        return modelMapper.map(savedBook, BookDto.class);
     }
 
     @Override

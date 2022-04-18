@@ -9,6 +9,6 @@ public interface BookService {
     Page<BookDto> getBooksByUserId(Integer id, Integer pageNumber, Integer pageSize);
     BookDto getBookById(Integer id, Integer userId);
     BookDto createBook(BookDtoCreation bookDtoCreation, Integer libraryId, Integer userId);
-    BookDto updateBookByIdAndLibraryId(Integer id, BookDto bookDto, Integer libraryId);
+    BookDto updateBookById(Integer id, BookDto bookDto, Integer libraryId, Integer userId);
     void deleteBook(Integer libraryId, Integer id, Integer userId);
 }

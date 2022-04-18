@@ -37,6 +37,13 @@ public class BookController {
         return bookService.createBook(bookDtoCreation, libraryId, userDetails.getId());
     }
 
+    @PutMapping("/libraries/{libraryId}/books/{id}")
+    public BookDto updateBook(@PathVariable Integer libraryId, @PathVariable Integer id, @RequestBody BookDto bookDto, Authentication authentication) {
+        JwtUserDetails userDetails =
+                (JwtUserDetails) authentication.getPrincipal();
+        return bookService.updateBookById(id, bookDto, libraryId, userDetails.getId());
+    }
+
     @DeleteMapping(value = {"/libraries/{libraryId}/books/{id}"})
     public void deleteBook(@PathVariable Integer libraryId, @PathVariable Integer id, Authentication authentication) {
         JwtUserDetails userDetails =
