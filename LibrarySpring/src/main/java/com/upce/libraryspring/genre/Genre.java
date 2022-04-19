@@ -1,7 +1,8 @@
 package com.upce.libraryspring.genre;
 
 import com.upce.libraryspring.book.Book;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.ColumnTransformer;
 
 import javax.persistence.*;
@@ -9,7 +10,8 @@ import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 public class Genre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,4 +27,17 @@ public class Genre {
 
     @ManyToMany(mappedBy = "bookGenres", fetch=FetchType.LAZY)
     private Set<Book> genreBooks;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Genre genre = (Genre) o;
+        return id == genre.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
+    }
 }
