@@ -5,8 +5,8 @@ import {Link} from "react-router-dom";
 
 function Libraries() {
     const [name, setName] = useState("");
-    const [description, setDescription] = useState("");
-    const [libraryType, setLibraryType] = useState("PRIVATE");
+    const [description, setDescription] = useState();
+    const [libraryType, setLibraryType] = useState();
     const [libraries, setLibraries] = useState([]);
     const [message, setMessage] = useState("");
 
@@ -118,9 +118,10 @@ function Libraries() {
                     </div>
                     <label className="col-sm-2 col-form-label" htmlFor="name">Library Type:</label>
                     <div class="col-sm-3">
-                        <select className="form-select" value={libraryType}
-                                onChange={(e) => setLibraryType(e.target.value)} aria-label="Select library type">
-                            <option value="PRIVATE" defaultValue>Private</option>
+                        <select className="form-select" value={libraryType ? libraryType : ""}
+                                onChange={(e) => setLibraryType(e.target.value === "" ? null : e.target.value)} aria-label="Select library type">
+                            <option value="" defaultValue></option>
+                            <option value="PRIVATE">Private</option>
                             <option value="PUBLIC">Public</option>
                         </select>
                     </div>

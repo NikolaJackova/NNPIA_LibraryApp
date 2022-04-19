@@ -7,14 +7,14 @@ function Books({libraryId}) {
 
     const [books, setBooks] = useState([]);
 
-    const [name, setName] = useState("");
-    const [description, setDescription] = useState("");
+    const [name, setName] = useState();
+    const [description, setDescription] = useState();
     const [publishedYear, setPublishedYear] = useState();
-    const [isbn, setIsbn] = useState("");
+    const [isbn, setIsbn] = useState();
     const [numberOfPages, setNumberOfPages] = useState();
     const [score, setScore] = useState();
-    const [evaluation, setEvaluation] = useState("");
-    const [bookState, setBookState] = useState("READ");
+    const [evaluation, setEvaluation] = useState();
+    const [bookState, setBookState] = useState();
 
     const [message, setMessage] = useState("");
 
@@ -45,8 +45,8 @@ function Books({libraryId}) {
                 show: true
             },
             {
-                Header: "Genres",
-                accessor: "genres",
+                Header: "Score",
+                accessor: "score",
                 show: true
             }
         ],
@@ -139,9 +139,10 @@ function Books({libraryId}) {
                     </div>
                     <label className="col-md-2 col-form-label" htmlFor="state">State:</label>
                     <div className="col-md-3">
-                        <select className="form-select" value={bookState}
-                                onChange={(e) => setBookState(e.target.value)} aria-label="Select library type">
-                            <option value="READ" defaultValue>Read</option>
+                        <select className="form-select" value={bookState ? bookState : ""}
+                                onChange={(e) => setBookState(e.target.value === "" ? null : e.target.value)} aria-label="Select library type">
+                            <option value="" defaultValue></option>
+                            <option value="READ">Read</option>
                             <option value="PROCEEDING">Proceeding</option>
                             <option value="PLANNED">Planned</option>
                             <option value="DEFERRED">Deferred</option>

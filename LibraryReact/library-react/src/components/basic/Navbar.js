@@ -25,6 +25,7 @@ function Navbar() {
                     {value ? (
                         <>
                             <Link className="nav-link" to={"/libraries"}>Libraries</Link>
+                            {currentUser.authorities.some(item => item.authority === "ADMIN") && <Link className="nav-link" to={"/genres"}>Genres</Link>}
                             <Link className="nav-link" to={"/profile"}>{currentUser.username}</Link>
                             <Link className="nav-link" to={"/login"} onClick={logOutHandler}>Log out</Link>
                         </>

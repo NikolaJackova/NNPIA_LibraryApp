@@ -12,6 +12,8 @@ import Libraries from "./components/library/Libraries";
 import Library from "./components/library/Library";
 import Footer from "./components/basic/Footer";
 import Book from "./components/book/Book";
+import BookGenres from "./components/genre/BookGenres";
+import Genres from "./components/genre/Genres";
 
 function App() {
 
@@ -25,6 +27,7 @@ function App() {
                     <Route path='/register' element={<Register/>}/>
                     <Route path='/login' element={<Login/>}/>
                     <Route path='/profile' element={< Profile/>}/>
+                    <Route path='/genres' element={<Genres/>}/>
                     <Route path='/libraries' element={< Libraries/>}/>
                     <Route path="/libraries/:libraryId" element={<Library/>}/>
                     <Route path="/libraries/:libraryId/books/:bookId" element={<Book/>}/>

@@ -1,35 +1,39 @@
 import {useEffect, useState} from "react";
 import * as AxiosAdapter from "../../adapters/AxiosAdapter";
 import {useParams} from "react-router";
-import Genres from "../genre/Genres";
+import BookGenres from "../genre/BookGenres";
 
 function Book() {
     const params = useParams();
 
-    const [name, setName] = useState("");
-    const [description, setDescription] = useState("");
+    const [name, setName] = useState();
+    const [description, setDescription] = useState();
     const [publishedYear, setPublishedYear] = useState();
-    const [isbn, setIsbn] = useState("");
+    const [isbn, setIsbn] = useState();
     const [numberOfPages, setNumberOfPages] = useState();
     const [score, setScore] = useState();
-    const [evaluation, setEvaluation] = useState("");
-    const [bookState, setBookState] = useState("READ");
+    const [evaluation, setEvaluation] = useState();
+    const [bookState, setBookState] = useState();
     const [genres, setGenres] = useState([]);
 
     const [message, setMessage] = useState("");
 
+    const setBookData = (response) => {
+        setName(response.data.name);
+        setDescription(response.data.description);
+        setNumberOfPages(response.data.numberOfPages);
+        setScore(response.data.score);
+        setEvaluation(response.data.evaluation);
+        setIsbn(response.data.isbn);
+        setPublishedYear(response.data.publishedYear);
+        setBookState(response.data.bookState);
+        setGenres(response.data.bookGenres);
+    }
     useEffect(
         () => {
             AxiosAdapter.getReq(`/libraries/${params.libraryId}/books/${params.bookId}`)
                 .then(response => {
-                    setName(response.data.name);
-                    setDescription(response.data.description);
-                    setNumberOfPages(response.data.numberOfPages);
-                    setScore(response.data.score);
-                    setEvaluation(response.data.evaluation);
-                    setIsbn(response.data.isbn);
-                    setPublishedYear(response.data.publishedYear);
-                    setGenres(response.data.bookGenres);
+                    setBookData(response);
                 }, error => {
                     const resMessage =
                         (error.response &&
@@ -58,14 +62,7 @@ function Book() {
 
         AxiosAdapter.putReq(`/libraries/${params.libraryId}/books/${params.bookId}`, modifiedBook)
             .then(response => {
-                setName(response.data.name);
-                setDescription(response.data.description);
-                setNumberOfPages(response.data.numberOfPages);
-                setScore(response.data.score);
-                setEvaluation(response.data.evaluation);
-                setIsbn(response.data.isbn);
-                setPublishedYear(response.data.publishedYear);
-                setGenres(response.data.bookGenres);
+                setBookData(response);
             }, error => {
                 const resMessage =
                     (error.response &&
@@ -87,9 +84,10 @@ function Book() {
                 </div>
                 <label className="col-md-2 col-form-label" htmlFor="state">State:</label>
                 <div className="col-md-3">
-                    <select className="form-select" value={bookState}
-                            onChange={(e) => setBookState(e.target.value)} aria-label="Select library type">
-                        <option value="READ" defaultValue>Read</option>
+                    <select className="form-select" value={bookState ? bookState : ""}
+                            onChange={(e) => setBookState(e.target.value === "" ? null : e.target.value)} aria-label="Select library type">
+                        <option value="" defaultValue></option>
+                        <option value="READ">Read</option>
                         <option value="PROCEEDING">Proceeding</option>
                         <option value="PLANNED">Planned</option>
                         <option value="DEFERRED">Deferred</option>
@@ -133,7 +131,7 @@ function Book() {
                 </div>
             </div>
             <div className="row mb-3">
-                <Genres bookGenres={genres} setBookGenres={setGenres}/>
+                <BookGenres bookGenres={genres} setBookGenres={setGenres}/>
             </div>
             <div className="row mb-3 justify-content-end">
                 <div className="col-md-3">
