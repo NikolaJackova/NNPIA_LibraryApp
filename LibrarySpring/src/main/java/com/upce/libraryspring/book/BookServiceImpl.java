@@ -3,10 +3,8 @@ package com.upce.libraryspring.book;
 import com.upce.libraryspring.book.dto.BookDto;
 import com.upce.libraryspring.book.dto.BookDtoCreation;
 import com.upce.libraryspring.genre.Genre;
-import com.upce.libraryspring.genre.GenreDto;
 import com.upce.libraryspring.library.Library;
 import com.upce.libraryspring.library.LibraryRepository;
-import com.upce.libraryspring.library.dto.LibraryDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -73,6 +71,7 @@ public class BookServiceImpl implements BookService{
         book.setPublishedYear(bookDto.getPublishedYear());
         book.setIsbn(bookDto.getIsbn());
         book.setNumberOfPages(bookDto.getNumberOfPages());
+        book.setBookState(bookDto.getBookState());
 
         Set<Genre> genres = bookDto.getBookGenres().stream().map(genre -> modelMapper.map(genre, Genre.class)).collect(Collectors.toSet());
         book.setBookGenres(genres);

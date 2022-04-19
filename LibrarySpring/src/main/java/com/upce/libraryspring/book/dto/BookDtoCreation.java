@@ -2,7 +2,7 @@ package com.upce.libraryspring.book.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.upce.libraryspring.author.AuthorDto;
-import com.upce.libraryspring.genre.GenreDto;
+import com.upce.libraryspring.genre.dto.GenreDto;
 import com.upce.libraryspring.library.Library;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

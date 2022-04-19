@@ -1,12 +1,12 @@
-package com.upce.libraryspring.genre;
+package com.upce.libraryspring.genre.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.upce.libraryspring.book.dto.BookDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import com.upce.libraryspring.book.dto.BookDto;
 import java.util.Set;
 
 @Data
