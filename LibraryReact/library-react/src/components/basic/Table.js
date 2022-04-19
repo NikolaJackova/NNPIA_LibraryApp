@@ -25,9 +25,7 @@ function Table({columns, data, fetchDataHandler, deleteHandler, pageCount: contr
             initialState: {
                 pageIndex: 0,
                 pageSize: 3,
-                hiddenColumns: columns
-                    .filter((column) => !column.show)
-                    .map((column) => column.id),
+                hiddenColumns: ['id'],
             },
             manualPagination: true,
             autoResetPage: false,
@@ -42,7 +40,7 @@ function Table({columns, data, fetchDataHandler, deleteHandler, pageCount: contr
 
     return (
         <>
-            <table class="table table-hover" {...getTableProps()}>
+            <table className="table table-hover" {...getTableProps()}>
                 <thead>
                 {headerGroups.map(headerGroup => (<tr {...headerGroup.getHeaderGroupProps()}>
                     {headerGroup.headers.map(column => (
@@ -59,7 +57,7 @@ function Table({columns, data, fetchDataHandler, deleteHandler, pageCount: contr
                             return <td {...cell.getCellProps()}>{cell.render("Cell")}</td>;
                         })}
                         <td>
-                            <button class="btn btn-primary" onClick={() => {
+                            <button className="btn btn-primary" onClick={() => {
                                 deleteHandler(row.values.id);
                             }}>Delete
                             </button>
@@ -69,58 +67,61 @@ function Table({columns, data, fetchDataHandler, deleteHandler, pageCount: contr
 
                 </tbody>
             </table>
-            <nav aria-label="Search results pages">
-                <ul className="pagination justify-content-center">
-                    <li className="page-item">
-                        <button className="btn btn-outline-primary" onClick={() => gotoPage(0)}
-                                disabled={!canPreviousPage} aria-label="First">
-                            <span aria-hidden="true">&laquo;</span>
-                        </button>
-                    </li>
-                    <li className="page-item">
-                        <button className="btn btn-outline-primary" onClick={() => previousPage()}
-                                disabled={!canPreviousPage}>Previous
-                        </button>
-                    </li>
-                    <li className="page-item">
-                        <button className="btn btn-outline-primary" onClick={() => nextPage()}
-                                disabled={!canNextPage}>Next
-                        </button>
-                    </li>
-                    <li className="page-item">
-                        <button className="btn btn-outline-primary" onClick={() => gotoPage(pageCount - 1)}
-                                disabled={!canNextPage} aria-label="Last">
-                            <span aria-hidden="true">&raquo;</span>
-                        </button>
-                    </li>
-                </ul>
-                <div class="container">
-                    <div class="row justify-content-md-center">
-                        <div class="col-2">
-                            <p>Page{' '}<strong>{pageIndex + 1} of {pageOptions.length}</strong>{' '}</p>
+            {
+                pageOptions.length != 0 && (
+                    <nav aria-label="Search results pages">
+                        <ul className="pagination justify-content-center">
+                            <li className="page-item">
+                                <button className="btn btn-outline-primary" onClick={() => gotoPage(0)}
+                                        disabled={!canPreviousPage} aria-label="First">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </button>
+                            </li>
+                            <li className="page-item">
+                                <button className="btn btn-outline-primary" onClick={() => previousPage()}
+                                        disabled={!canPreviousPage}>Previous
+                                </button>
+                            </li>
+                            <li className="page-item">
+                                <button className="btn btn-outline-primary" onClick={() => nextPage()}
+                                        disabled={!canNextPage}>Next
+                                </button>
+                            </li>
+                            <li className="page-item">
+                                <button className="btn btn-outline-primary" onClick={() => gotoPage(pageCount - 1)}
+                                        disabled={!canNextPage} aria-label="Last">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </button>
+                            </li>
+                        </ul>
+                        <div className="container">
+                            <div className="row justify-content-md-center">
+                                <div className="col-2">
+                                    <p>Page{' '}<strong>{pageIndex + 1} of {pageOptions.length}</strong>{' '}</p>
+                                </div>
+                                <div className="col-2">
+                                    <input className="form-control" type="number" defaultValue={pageIndex + 1}
+                                           onChange={e => {
+                                               const page = e.target.value ? Number(e.target.value) - 1 : 0;
+                                               gotoPage(page)
+                                           }}/>
+                                </div>
+                                <div className="col-3">
+                                    <select className="form-select" value={pageSize} onChange={e => {
+                                        setPageSize(Number(e.target.value))
+                                    }}>
+                                        {[3, 10, 20, 30, 40, 50].map(pageSize => (
+                                            <option key={pageSize} value={pageSize}>
+                                                Show {pageSize}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-2">
-                            <input className="form-control" type="number" defaultValue={pageIndex + 1}
-                                   onChange={e => {
-                                       const page = e.target.value ? Number(e.target.value) - 1 : 0;
-                                       gotoPage(page)
-                                   }}/>
-                        </div>
-                        <div class="col-3">
-                            <select className="form-select" value={pageSize} onChange={e => {
-                                setPageSize(Number(e.target.value))
-                            }}>
-                                {[3, 10, 20, 30, 40, 50].map(pageSize => (
-                                    <option key={pageSize} value={pageSize}>
-                                        Show {pageSize}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-            </nav>
+                    </nav>
+                )
+            }
         </>);
 }
 

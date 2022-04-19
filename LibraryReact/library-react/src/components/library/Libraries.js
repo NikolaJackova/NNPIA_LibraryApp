@@ -108,16 +108,16 @@ function Libraries() {
     }
 
     return (
-        <div class="row justify-content-center">
-            <form class="col-xl-8" onSubmit={addLibraryHandler}>
-                <div class="row mb-3">
-                    <label class="col-sm-2 col-form-label" htmlFor="name">Name:</label>
-                    <div class="col-sm-5">
-                        <input class="form-control" type="text" name="name" value={name}
+        <div className="row justify-content-center">
+            <form className="col-xl-8" onSubmit={addLibraryHandler}>
+                <div className="row mb-3">
+                    <label className="col-sm-2 col-form-label" htmlFor="name">Name:</label>
+                    <div className="col-sm-5">
+                        <input className="form-control" type="text" name="name" value={name}
                                onChange={(e) => setName(e.target.value)}/>
                     </div>
                     <label className="col-sm-2 col-form-label" htmlFor="name">Library Type:</label>
-                    <div class="col-sm-3">
+                    <div className="col-sm-3">
                         <select className="form-select" value={libraryType ? libraryType : ""}
                                 onChange={(e) => setLibraryType(e.target.value === "" ? null : e.target.value)} aria-label="Select library type">
                             <option value="" defaultValue></option>
@@ -126,10 +126,10 @@ function Libraries() {
                         </select>
                     </div>
                 </div>
-                <div class="row mb-3">
-                    <label class="col-sm-2 col-form-label" htmlFor="description">Description:</label>
-                    <div class="col-sm-10">
-                        <textarea class="form-control" name="description" value={description}
+                <div className="row mb-3">
+                    <label className="col-sm-2 col-form-label" htmlFor="description">Description:</label>
+                    <div className="col-sm-10">
+                        <textarea className="form-control" name="description" value={description}
                                   onChange={(e) => setDescription(e.target.value)}/>
                     </div>
                 </div>

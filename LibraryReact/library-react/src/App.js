@@ -18,10 +18,10 @@ import Genres from "./components/genre/Genres";
 function App() {
 
     return (
-        <div class="d-flex flex-column min-vh-100">
+        <div className="d-flex flex-column min-vh-100">
         <UserProvider>
             <Navbar/>
-            <div class="container-md p-sm-3">
+            <div className="container-md p-sm-3">
                 <Routes>
                     <Route path='/' element={<Home/>}/>
                     <Route path='/register' element={<Register/>}/>
