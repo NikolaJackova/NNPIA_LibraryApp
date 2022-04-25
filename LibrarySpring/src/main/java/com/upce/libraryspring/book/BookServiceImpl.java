@@ -38,11 +38,6 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public Page<BookDto> getBooksByUserId(Integer id, Integer pageNumber, Integer pageSize) {
-        return null;
-    }
-
-    @Override
     public BookDto getBookById(Integer id, Integer userId) {
         Book book = bookRepository.findById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Book with id: " + id + " was not found."));

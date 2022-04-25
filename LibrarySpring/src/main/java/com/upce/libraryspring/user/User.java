@@ -52,7 +52,6 @@ public class User {
     @UpdateTimestamp
     private Timestamp updated;
 
-    //TODO initialize?? if not there is null exception
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Library> userLibraries = new HashSet<>();
 

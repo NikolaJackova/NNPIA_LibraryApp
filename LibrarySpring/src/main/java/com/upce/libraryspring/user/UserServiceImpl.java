@@ -30,13 +30,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUserById(Integer id) {
-        User user = userRepository.findById(id).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "The user with id: " + id + " was not found."));
-        return modelMapper.map(user, UserDto.class);
-    }
-
-    @Override
     public UserDto getUserByUsername(String username) {
         User user = userRepository.findByUsername(username).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "The user with username: " + username + " was not found."));

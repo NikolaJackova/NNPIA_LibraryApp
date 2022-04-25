@@ -30,7 +30,6 @@ public class JwtUserDetailServiceImpl implements UserDetailsService {
     }
 
     @Override
-    //TODO why transactional - failed to lazily initialize a collection of role : could not initialize proxy - no Session
     @Transactional
     public JwtUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
