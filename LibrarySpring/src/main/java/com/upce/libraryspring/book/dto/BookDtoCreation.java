@@ -33,8 +33,6 @@ public class BookDtoCreation implements Serializable {
     private String evaluation;
     private Integer publishedYear;
     private BookState bookState;
-    private Set<GenreDto> bookGenres;
-    private Set<AuthorDto> booAuthors;
     @JsonIgnore
     private Library library;
 }

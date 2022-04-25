@@ -16,7 +16,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class BookServiceImpl implements BookService{
+public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final LibraryRepository libraryRepository;
     private final ModelMapper modelMapper;
@@ -59,6 +59,11 @@ public class BookServiceImpl implements BookService{
 
         Book book = checkIfBookExist(id);
 
+        if (bookDto.getLibraryId() != null && bookDto.getLibraryId()  != book.getLibrary().getId()) {
+            BookDto bookDtoCreated = createBook(modelMapper.map(book, BookDtoCreation.class), bookDto.getLibraryId(), userId);
+            return bookDtoCreated;
+        }
+
         book.setName(bookDto.getName());
         book.setDescription(bookDto.getDescription());
         book.setEvaluation(bookDto.getEvaluation());
@@ -76,21 +81,21 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public void deleteBook(Integer libraryId, Integer id,  Integer userId) {
+    public void deleteBook(Integer libraryId, Integer id, Integer userId) {
         checkAuthorizedUserAndLibrary(libraryId, userId);
         bookRepository.deleteById(id);
     }
 
-    private Library checkAuthorizedUserAndLibrary(Integer libraryId, Integer userId){
+    private Library checkAuthorizedUserAndLibrary(Integer libraryId, Integer userId) {
         Library library = libraryRepository.findById(libraryId).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Library with id: " + libraryId + " was not found."));
-        if (library.getUser().getId() != userId){
+        if (library.getUser().getId() != userId) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized.");
         }
         return library;
     }
 
-    private Book checkIfBookExist(Integer id){
+    private Book checkIfBookExist(Integer id) {
         return bookRepository.findById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Book with id: " + id + " was not found."));
     }

@@ -18,7 +18,7 @@ public class LibraryController {
     }
 
     @GetMapping(value = {"", "/"})
-    public Page<LibraryDto> getLibrariesByUserId(Authentication authentication, @RequestParam(defaultValue = "0") Integer pageIndex, @RequestParam(defaultValue = "3") Integer pageSize) {
+    public Page<LibraryDto> getLibrariesByUserId(Authentication authentication, @RequestParam(defaultValue = "0") Integer pageIndex, @RequestParam(defaultValue = "10") Integer pageSize) {
         JwtUserDetails userDetails =
                 (JwtUserDetails) authentication.getPrincipal();
         return libraryService.getLibrariesByUserId(userDetails.getId(), pageIndex, pageSize);

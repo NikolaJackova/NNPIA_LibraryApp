@@ -36,4 +36,5 @@ public class BookDto implements Serializable {
     private Set<AuthorDto> booAuthors;
     @JsonIgnore
     private Library library;
+    private Integer libraryId;
 }
