@@ -39,8 +39,7 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public BookDto getBookById(Integer id, Integer userId) {
-        Book book = bookRepository.findById(id).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "Book with id: " + id + " was not found."));
+        Book book = checkIfBookExist(id);
         checkAuthorizedUserAndLibrary(book.getLibrary().getId(), userId);
         return modelMapper.map(book, BookDto.class);
     }
@@ -57,8 +56,9 @@ public class BookServiceImpl implements BookService{
     @Override
     public BookDto updateBookById(Integer id, BookDto bookDto, Integer libraryId, Integer userId) {
         checkAuthorizedUserAndLibrary(libraryId, userId);
-        Book book = bookRepository.findById(id).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "Book with id: " + id + " was not found."));
+
+        Book book = checkIfBookExist(id);
+
         book.setName(bookDto.getName());
         book.setDescription(bookDto.getDescription());
         book.setEvaluation(bookDto.getEvaluation());
@@ -88,5 +88,10 @@ public class BookServiceImpl implements BookService{
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized.");
         }
         return library;
+    }
+
+    private Book checkIfBookExist(Integer id){
+        return bookRepository.findById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Book with id: " + id + " was not found."));
     }
 }
