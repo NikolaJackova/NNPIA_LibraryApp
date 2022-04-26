@@ -181,3 +181,7 @@ This project is part of the semester work from the subject NNPIA.
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
 | `id`      | `int` | **Required**. Id of genre to fetch |
+
+## Documentation
+
+[Documentation](NNPIA_LibraryApp/Documentation/LibrarySpringDocumentation.docx)
