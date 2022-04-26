@@ -159,12 +159,12 @@ This project is part of the semester work from the subject NNPIA.
 | `id`      | `int` | **Required**. Id of genre to fetch |
 
 
-#### Create library
+#### Create genre
 ```http
   POST /api/v1/genres
 ```
 
-#### Update library
+#### Update genre
 
 ```http
   PUT /api/v1/genres/${id}
@@ -173,7 +173,7 @@ This project is part of the semester work from the subject NNPIA.
 | :-------- | :------- | :-------------------------------- |
 | `id`      | `int` | **Required**. Id of genre to fetch |
 
-#### Delete library
+#### Delete genre
 
 ```http
   DELETE /api/v1/genres/${id}
