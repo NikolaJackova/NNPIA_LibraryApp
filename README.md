@@ -9,3 +9,11 @@ This project is the semester work from the subject NNPIA.
 - Genre management
 - Responsive design
 - Pagination
+
+### Backend
+
+[Backend](./LibrarySpring)
+
+### Frontend
+
+[Frontend](./LibraryReact/library-react)
