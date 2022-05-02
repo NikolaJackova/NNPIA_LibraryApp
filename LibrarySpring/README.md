@@ -2,6 +2,10 @@
 
 This project is part of the semester work from the subject NNPIA.
 
+## Database model
+
+![DBModel](../docu_images/data_model.png)
+
 ## API Reference
 
 ### USERS

@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -59,7 +60,7 @@ public class BookServiceImpl implements BookService {
 
         Book book = checkIfBookExist(id);
 
-        if (bookDto.getLibraryId() != null && bookDto.getLibraryId()  != book.getLibrary().getId()) {
+        if (!Objects.equals(bookDto.getLibraryId(), book.getLibrary().getId())) {
             BookDto bookDtoCreated = createBook(modelMapper.map(book, BookDtoCreation.class), bookDto.getLibraryId(), userId);
             return bookDtoCreated;
         }
