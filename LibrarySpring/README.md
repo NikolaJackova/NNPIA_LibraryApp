@@ -6,6 +6,18 @@ This project is part of the semester work from the subject NNPIA.
 
 ![DBModel](../docu_images/data_model.png)
 
+## Authorization and authentication
+
+| Roles   | Description   |
+|:--------|:--------------|
+| `ADMIN` | Admin user    |
+| `USER`  | Standard user |
+
+Every registered user has at least one role. When the user is created, the USER role is assigned to him.
+Every user with USER role can create, update or delete own libraries and books. He can also edit his profile.
+Every user with ADMIN role can create or delete genres.
+Password is encrypted with BCrypt.
+
 ## API Reference
 
 ### USERS
