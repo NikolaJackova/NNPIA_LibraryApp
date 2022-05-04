@@ -60,7 +60,7 @@ public class BookServiceImpl implements BookService {
 
         Book book = checkIfBookExist(id);
 
-        if (!Objects.equals(bookDto.getLibraryId(), book.getLibrary().getId())) {
+        if (bookDto.getLibraryId() != null && bookDto.getLibraryId()  != book.getLibrary().getId()) {
             BookDto bookDtoCreated = createBook(modelMapper.map(book, BookDtoCreation.class), bookDto.getLibraryId(), userId);
             return bookDtoCreated;
         }
